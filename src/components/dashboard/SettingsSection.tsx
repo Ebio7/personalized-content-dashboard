@@ -60,25 +60,25 @@ export const SettingsSection: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             {t('settings.contentPreferencesDesc')}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
             {AVAILABLE_CATEGORIES.map((category) => (
               <motion.button
                 key={category.id}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleToggleCategory(category.id)}
-                className={`p-4 rounded-lg border-2 transition-all ${
+                className={`p-3 lg:p-4 rounded-lg border-2 transition-all ${
                   categories.includes(category.id)
                     ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20'
                     : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
-                <div className="text-3xl mb-2">{category.icon}</div>
-                <div className="font-medium text-gray-900 dark:text-white">
+                <div className="text-2xl lg:text-3xl mb-2">{category.icon}</div>
+                <div className="font-medium text-gray-900 dark:text-white text-sm lg:text-base">
                   {t(`categories.${category.id}`)}
                 </div>
                 {categories.includes(category.id) && (
-                  <div className="mt-2 text-sm text-blue-600 dark:text-blue-400">
+                  <div className="mt-2 text-xs lg:text-sm text-blue-600 dark:text-blue-400">
                     ✓ Selected
                   </div>
                 )}

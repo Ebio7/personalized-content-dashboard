@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: white;
-  --color-foreground: #171717;
+  --color-background: #e0f2fe;
+  --color-foreground: #0c4a6e;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 html {
-  background: white !important;
-  color: #171717 !important;
+  background: #e0f2fe !important;
+  color: #0c4a6e !important;
 }
 
 html.dark {
@@ -23,8 +23,8 @@ html.dark body {
 }
 
 html:not(.dark) body {
-  background: white !important;
-  color: #171717 !important;
+  background: #e0f2fe !important;
+  color: #0c4a6e !important;
 }
 
 body {

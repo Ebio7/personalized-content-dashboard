@@ -10,9 +10,10 @@ interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
   onLoginClick: () => void;
+  isMobile?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onLoginClick }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onLoginClick, isMobile = false }) => {
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector((state) => state.preferences.darkMode);
@@ -42,7 +43,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
   ];
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 fixed h-full overflow-y-auto">
+    <aside className={`w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 h-full overflow-y-auto ${isMobile ? 'fixed' : 'relative'}`}>
+      {isMobile && (
+        <button
+          onClick={onSectionChange.bind(null, activeSection)}
+          className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <svg className="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           {t('sidebar.title')}

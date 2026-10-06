@@ -10,9 +10,11 @@ import { useAppSelector } from '@/store/hooks';
 interface HeaderProps {
   onSearch: (query: string) => void;
   onProfileClick: () => void;
+  onMenuClick?: () => void;
+  showMenuButton?: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onSearch, onProfileClick }) => {
+export const Header: React.FC<HeaderProps> = ({ onSearch, onProfileClick, onMenuClick, showMenuButton = false }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const { refresh } = useRealTimeUpdates(30000);
@@ -27,8 +29,19 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, onProfileClick }) => {
   }, [searchQuery, debouncedSearch]);
 
   return (
-    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 ml-64">
-      <div className="flex items-center justify-between">
+    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 lg:px-6 py-4">
+      <div className="flex items-center justify-between gap-4">
+        {showMenuButton && (
+          <button
+            onClick={onMenuClick}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            <svg className="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        )}
+
         <div className="flex-1 max-w-2xl">
           <div className="relative">
             <input
@@ -54,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, onProfileClick }) => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-4 ml-4">
+        <div className="flex items-center space-x-2 lg:space-x-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -82,25 +95,25 @@ export const Header: React.FC<HeaderProps> = ({ onSearch, onProfileClick }) => {
             onClick={onProfileClick}
           >
             {isAuthenticated && user ? (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2 lg:space-x-3">
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-10 h-10 rounded-full border-2 border-blue-500"
+                  className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-blue-500"
                 />
                 <div className="hidden sm:block">
-                  <p className="text-gray-900 dark:text-white font-medium">{user.name}</p>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">{user.email}</p>
+                  <p className="text-gray-900 dark:text-white font-medium text-sm lg:text-base">{user.name}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs lg:text-sm">{user.email}</p>
                 </div>
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold shadow-lg">
+              <div className="flex items-center space-x-2 lg:space-x-3">
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold shadow-lg text-sm lg:text-base">
                   U
                 </div>
                 <div className="hidden sm:block">
-                  <p className="text-gray-900 dark:text-white font-medium">Guest User</p>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">Sign in to personalize</p>
+                  <p className="text-gray-900 dark:text-white font-medium text-sm lg:text-base">Guest User</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs lg:text-sm">Sign in to personalize</p>
                 </div>
               </div>
             )}

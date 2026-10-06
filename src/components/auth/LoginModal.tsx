@@ -60,7 +60,7 @@ export const LoginModal: React.FC<{ isOpen: boolean; onClose: () => void; onLogo
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4 relative shadow-2xl"
+            className="bg-white dark:bg-gray-800 rounded-lg p-6 lg:p-8 max-w-md w-full mx-4 relative shadow-2xl"
           >
             <button
               onClick={onClose}
@@ -70,7 +70,7 @@ export const LoginModal: React.FC<{ isOpen: boolean; onClose: () => void; onLogo
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-6">
               {isAuthenticated ? t('auth.logout') : isSignUp ? t('auth.signUp') : t('auth.login')}
             </h2>
 

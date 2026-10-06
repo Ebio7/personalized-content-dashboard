@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { FeedSection } from '@/components/dashboard/FeedSection';
@@ -18,9 +19,22 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState('feed');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector((state) => state.preferences.darkMode);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto-show login modal on first visit if not authenticated
   useEffect(() => {
@@ -43,8 +57,8 @@ export default function Home() {
       body.style.color = '#ededed';
     } else {
       html.classList.remove('dark');
-      body.style.backgroundColor = 'white';
-      body.style.color = '#171717';
+      body.style.backgroundColor = '#e0f2fe';
+      body.style.color = '#0c4a6e';
     }
   }, [darkMode]);
 
@@ -73,24 +87,84 @@ export default function Home() {
     localStorage.removeItem('hasSeenLoginPrompt');
   };
 
-  return (
-    <div className="flex h-screen" style={{ backgroundColor: darkMode ? '#0a0a0a' : '#f9fafb', color: darkMode ? '#ededed' : '#171717' }}>
-      <Sidebar activeSection={activeSection} onSectionChange={handleSectionChange} onLoginClick={handleProfileClick} />
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
-      <div className="flex-1 flex flex-col ml-64 overflow-hidden">
-        <Header onSearch={handleSearch} onProfileClick={handleProfileClick} />
+  return (
+    <div className="flex h-screen" style={{ backgroundColor: darkMode ? '#0a0a0a' : '#e0f2fe', color: darkMode ? '#ededed' : '#0c4a6e' }}>
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && isMobile && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={toggleSidebar}
+            className="fixed inset-0 bg-black/50 z-40"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar */}
+      {isMobile ? (
+        <motion.div
+          initial={false}
+          animate={{
+            x: isSidebarOpen ? 0 : -256,
+          }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className="fixed z-50"
+        >
+          <Sidebar
+            activeSection={activeSection}
+            onSectionChange={(section) => {
+              handleSectionChange(section);
+              setIsSidebarOpen(false);
+            }}
+            onLoginClick={handleProfileClick}
+            isMobile={true}
+          />
+        </motion.div>
+      ) : (
+        <div className="hidden lg:block">
+          <Sidebar
+            activeSection={activeSection}
+            onSectionChange={handleSectionChange}
+            onLoginClick={handleProfileClick}
+            isMobile={false}
+          />
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col lg:ml-64 transition-all duration-300 relative">
+        <Header
+          onSearch={handleSearch}
+          onProfileClick={handleProfileClick}
+          onMenuClick={toggleSidebar}
+          showMenuButton={isMobile}
+        />
 
         <main className="flex-1 overflow-y-auto">
-          {showSearchResults ? (
-            <SearchResults />
-          ) : (
-            <>
-              {activeSection === 'feed' && <FeedSection />}
-              {activeSection === 'trending' && <TrendingSection />}
-              {activeSection === 'favorites' && <FavoritesSection />}
-              {activeSection === 'settings' && <SettingsSection />}
-            </>
-          )}
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {showSearchResults ? (
+              <SearchResults />
+            ) : (
+              <>
+                {activeSection === 'feed' && <FeedSection />}
+                {activeSection === 'trending' && <TrendingSection />}
+                {activeSection === 'favorites' && <FavoritesSection />}
+                {activeSection === 'settings' && <SettingsSection />}
+              </>
+            )}
+          </motion.div>
         </main>
       </div>
 

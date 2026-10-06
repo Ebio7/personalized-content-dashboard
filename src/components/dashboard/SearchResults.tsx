@@ -34,10 +34,10 @@ export const SearchResults: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
-        <h2 className="text-3xl font-bold mb-2" style={{ color: darkMode ? '#ededed' : '#111827' }}>
+        <h2 className="text-3xl font-bold mb-2" style={{ color: darkMode ? '#ededed' : '#0c4a6e' }}>
           {t('feed.title')}
         </h2>
-        <p className="text-lg" style={{ color: darkMode ? '#9ca3af' : '#4b5563' }}>
+        <p className="text-lg" style={{ color: darkMode ? '#9ca3af' : '#0369a1' }}>
           Results for "{query}"
         </p>
       </motion.div>
@@ -52,18 +52,18 @@ export const SearchResults: React.FC = () => {
         </div>
       ) : results.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-lg" style={{ color: darkMode ? '#9ca3af' : '#4b5563' }}>
+          <p className="text-lg" style={{ color: darkMode ? '#9ca3af' : '#0369a1' }}>
             No results found for "{query}"
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
           {results.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
             >
               <ContentCard
                 item={item}

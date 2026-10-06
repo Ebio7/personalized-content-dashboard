@@ -58,7 +58,7 @@ export const ContentCard: React.FC<ContentCardProps> = ({
       className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700"
     >
       {item.imageUrl && (
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-40 lg:h-48 overflow-hidden">
           <img
             src={item.imageUrl}
             alt={item.title}
@@ -71,11 +71,11 @@ export const ContentCard: React.FC<ContentCardProps> = ({
           </div>
         </div>
       )}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+      <div className="p-3 lg:p-4">
+        <h3 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
           {item.title}
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-3">
+        <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-3">
           {item.description}
         </p>
         <div className="flex items-center justify-between">
