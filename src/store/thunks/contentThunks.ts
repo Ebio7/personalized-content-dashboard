@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { apiService } from '@/services/apiService';
 import { setContentLoading, setContentError, setContentItems, appendContentItems, incrementPage, setHasMore } from '../slices/contentSlice';
-import { setSearchLoading, setSearchError, setSearchResults } from '../slices/searchSlice';
+import { setSearchLoading, setSearchError, setSearchResults, setSearchQuery } from '../slices/searchSlice';
 import { setTrendingLoading, setTrendingError, setTrendingItems } from '../slices/trendingSlice';
 import { RootState } from '../store';
 
@@ -50,6 +50,7 @@ export const searchContent = createAsyncThunk(
   'search/searchContent',
   async (query: string, { dispatch }) => {
     try {
+      dispatch(setSearchQuery(query));
       dispatch(setSearchLoading(true));
       dispatch(setSearchError(null));
 

@@ -1,24 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { toggleDarkMode, setLanguage } from '@/store/slices/preferencesSlice';
-import { LoginModal } from '@/components/auth/LoginModal';
 
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  onLoginClick: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onLoginClick }) => {
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const darkMode = useAppSelector((state) => state.preferences.darkMode);
   const language = useAppSelector((state) => state.preferences.language);
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const sections = [
     { id: 'feed', label: t('sidebar.feed'), icon: '📰' },
@@ -102,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
         </div>
 
         <button
-          onClick={() => setIsLoginModalOpen(true)}
+          onClick={onLoginClick}
           className="w-full flex items-center px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         >
           <span className="text-xl mr-3">{isAuthenticated ? '👤' : '🔐'}</span>
@@ -111,8 +110,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
           </span>
         </button>
       </div>
-
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </aside>
   );
 };

@@ -9,9 +9,10 @@ import { useAppSelector } from '@/store/hooks';
 
 interface HeaderProps {
   onSearch: (query: string) => void;
+  onProfileClick: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
+export const Header: React.FC<HeaderProps> = ({ onSearch, onProfileClick }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const { refresh } = useRealTimeUpdates(30000);
@@ -76,27 +77,32 @@ export const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             </svg>
           </motion.button>
 
-          <div className="flex items-center space-x-2">
+          <div
+            className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 transition-colors"
+            onClick={onProfileClick}
+          >
             {isAuthenticated && user ? (
-              <>
+              <div className="flex items-center space-x-3">
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full border-2 border-blue-500"
                 />
-                <span className="text-gray-700 dark:text-gray-300 font-medium hidden sm:block">
-                  {user.name}
-                </span>
-              </>
+                <div className="hidden sm:block">
+                  <p className="text-gray-900 dark:text-white font-medium">{user.name}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">{user.email}</p>
+                </div>
+              </div>
             ) : (
-              <>
-                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold shadow-lg">
                   U
                 </div>
-                <span className="text-gray-700 dark:text-gray-300 font-medium hidden sm:block">
-                  {t('header.user')}
-                </span>
-              </>
+                <div className="hidden sm:block">
+                  <p className="text-gray-900 dark:text-white font-medium">Guest User</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">Sign in to personalize</p>
+                </div>
+              </div>
             )}
           </div>
         </div>
